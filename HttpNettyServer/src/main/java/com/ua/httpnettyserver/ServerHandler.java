@@ -10,6 +10,7 @@ import io.netty.handler.codec.http.HttpRequest;
 public class ServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext context, Object message) {
+        System.out.println("New message");
     }
 
     @Override
@@ -19,5 +20,7 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext context, Throwable cause) {
+        System.out.println("Some fail");
+        context.close();
     }
 }
