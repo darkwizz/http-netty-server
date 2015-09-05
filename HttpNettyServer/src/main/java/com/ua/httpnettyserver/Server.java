@@ -3,6 +3,7 @@ package com.ua.httpnettyserver;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
@@ -36,7 +37,8 @@ public class Server {
                                     .addLast("encoder", new HttpResponseEncoder())
                                     .addLast("handler", new ServerHandler());
                         }
-                    });
+                    })
+                .childOption(ChannelOption.SO_KEEPALIVE, true);
             ChannelFuture future = bootstrap.bind(port);
             System.in.read();
             future.channel().close();
