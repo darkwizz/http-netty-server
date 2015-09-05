@@ -1,6 +1,7 @@
 package com.ua.httpnettyserver;
 
 import io.netty.buffer.Unpooled;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.codec.http.*;
@@ -28,13 +29,23 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
                     case "/helloworld":
                         handleHelloWorld(context);
                         break;
+                    case "/redirect":
+                        if (!decoder.parameters().containsKey("url")) {
+                            sendResponse(context, "<p>No redirect url specified</p>", HttpResponseStatus.BAD_REQUEST);
+                            context.close();
+                            return;
+                        }
+                        String redirectUrl = decoder.parameters().get("url").get(0);
+                        handleRedirect(context, redirectUrl);
+                        break;
                     default:
                         sendResponse(context, "<h1>EHLO there. Unknown path</h1>", HttpResponseStatus.OK);
                         context.close();
                         break;
                 }
             } else {
-                System.out.println("New message");
+                System.out.println("New message"); // logging
+                context.close();
             }
         } finally {
             ReferenceCountUtil.release(message);
@@ -58,6 +69,17 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
                 context.close();
             }
         }, 10, TimeUnit.SECONDS);
+    }
+
+    private void handleRedirect(ChannelHandlerContext context, String redirectUrl) {
+        if (!redirectUrl.contains("http://")) {
+            redirectUrl = "http://" + redirectUrl;
+        }
+        FullHttpResponse response = new DefaultFullHttpResponse(
+                HttpVersion.HTTP_1_1, HttpResponseStatus.FOUND);
+        //response.headers().set(HttpHeaders.Names.CONTENT_TYPE, "text/html; charset=UTF-8");
+        response.headers().set(HttpHeaders.Names.LOCATION, redirectUrl);
+        context.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
     }
 
     @Override
