@@ -24,7 +24,6 @@ public class Server {
     }
 
     public void run() throws InterruptedException, IOException {
-        System.out.println("Run server on port " + port);
         EventLoopGroup group = new NioEventLoopGroup();
         try {
             ServerBootstrap bootstrap = new ServerBootstrap();
@@ -40,6 +39,7 @@ public class Server {
                     })
                 .childOption(ChannelOption.SO_KEEPALIVE, true);
             ChannelFuture future = bootstrap.bind(port);
+            System.out.println("Run server on port " + port);
             System.in.read();
             future.channel().close();
         } finally {
