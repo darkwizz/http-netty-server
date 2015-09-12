@@ -40,8 +40,8 @@ public class Server {
                 .childOption(ChannelOption.SO_KEEPALIVE, true);
             ChannelFuture future = bootstrap.bind(port);
             System.out.println("Run server on port " + port);
-            System.in.read();
-            future.channel().close();
+            //System.in.read();
+            future.channel().closeFuture().sync();
         } finally {
             group.shutdownGracefully();
         }

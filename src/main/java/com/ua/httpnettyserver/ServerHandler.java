@@ -101,9 +101,12 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 
     private void handleStop(ChannelHandlerContext context) {
         try {
-            context.executor().parent().shutdownGracefully().await();
-        } catch (InterruptedException e) {
             context.close();
+            context.channel().parent().close().sync();
+            //context.channel().eventLoop().parent().shutdownGracefully().await();
+            System.out.println("Some log message");
+        } catch (InterruptedException e) {
+            System.out.println("Fail");
         }
     }
 
