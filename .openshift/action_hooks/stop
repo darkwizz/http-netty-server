@@ -1,6 +1,9 @@
 #!/bin/bash
 
-if [[ -z "$OPENSHIFT_INTERNAL_IP" ]]; then export OPENSHIFT_INTERNAL_IP=trynetty-darkwizz.rhcloud.com; fi
-if [[ -z "$OPENSHIFT_INTERNAL_PORT" ]]; then export OPENSHIFT_INTERNAL_PORT=8080; fi
+kill `ps -ef | grep *netty* | grep -v grep | awk '{ print $2 }'` > /dev/null 2>&1
+exit 0
 
-wget http://${OPENSHIFT_INTERNAL_IP}/stop
+#if [[ -z "$OPENSHIFT_INTERNAL_IP" ]]; then export OPENSHIFT_INTERNAL_IP=trynetty-darkwizz.rhcloud.com; fi
+#if [[ -z "$OPENSHIFT_INTERNAL_PORT" ]]; then export OPENSHIFT_INTERNAL_PORT=8080; fi
+
+#wget http://${OPENSHIFT_INTERNAL_IP}/stop
