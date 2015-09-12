@@ -48,7 +48,7 @@ public class Server {
     }
 
     public static void main(String[] argv) {
-        Server server = new Server(80);
+        Server server = new Server(8080);
         try {
             server.run();
         } catch (InterruptedException ex) {
