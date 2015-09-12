@@ -5,4 +5,4 @@ cd $OPENSHIFT_REPO_DIR
 if [[ -z "$OPENSHIFT_INTERNAL_IP" ]]; then export OPENSHIFT_INTERNAL_IP=trynetty-darkwizz.rhcloud.com; fi
 if [[ -z "$OPENSHIFT_INTERNAL_PORT" ]]; then export OPENSHIFT_INTERNAL_PORT=80; fi
 
-nohup java -jar target/httpnettyserver-1.0-SNAPSHOT.jar > ${OPENSHIFT_DIY_LOG_DIR}/trynetty.log 2>&1 &
+nohup java -jar target/httpnettyserver-1.0-SNAPSHOT.jar > ./trynetty.log 2>&1 &
