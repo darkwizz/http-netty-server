@@ -1,5 +1,8 @@
 #!/bin/bash
-# The logic to start up your application should be put in this
-# script. The application will work only if it binds to
-# $OPENSHIFT_DIY_IP:8080
-nohup $OPENSHIFT_REPO_DIR/diy/testrubyserver.rb $OPENSHIFT_DIY_IP $OPENSHIFT_REPO_DIR/diy |& /usr/bin/logshifter -tag diy &
+
+cd $OPENSHIFT_REPO_DIR
+
+if [[ -z "$OPENSHIFT_INTERNAL_IP" ]]; then export OPENSHIFT_INTERNAL_IP="$OPENSHIFT_DIY_IP"; fi
+if [[ -z "$OPENSHIFT_INTERNAL_PORT" ]]; then export OPENSHIFT_INTERNAL_PORT="$OPENSHIFT_DIY_PORT"; fi
+
+nohup java -jar target/httpnettyserver-1.0-SNAPSHOT.jar > ${OPENSHIFT_DIY_LOG_DIR}/trynetty.log 2 > &1 &
