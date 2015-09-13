@@ -19,6 +19,9 @@ import static java.lang.Thread.sleep;
  * Created by ARTUR on 04.09.2015.
  */
 public class Server {
+    private static final String DEFAULT_HOST = "localhost";
+    private static final String DEFAULT_PORT = "80";
+
     private final int port;
     private final String host;
 
@@ -64,11 +67,13 @@ public class Server {
         String host = System.getenv("OPENSHIFT_INTERNAL_IP");
         if (host == null) {
             host = System.getenv("OPENSHIFT_DIY_IP");
+            host = host == null ? DEFAULT_HOST : host;
         }
         System.out.println("Host: " + host); // logging
         String strPort = System.getenv("OPENSHIFT_INTERNAL_PORT");
         if (strPort == null) {
             strPort = System.getenv("OPENSHIFT_DIY_PORT");
+            strPort = strPort == null ? DEFAULT_PORT : strPort;
         }
         System.out.println("Port: " + strPort); // logging
         int port = Integer.parseInt(strPort);
