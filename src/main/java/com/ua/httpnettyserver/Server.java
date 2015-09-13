@@ -39,11 +39,12 @@ public class Server {
                     })
                 .childOption(ChannelOption.SO_KEEPALIVE, true);
             ChannelFuture future = bootstrap.bind(port);
-            System.out.println("Run server on port " + port);
+            System.out.println("Run server on port " + port); // logging
             //System.in.read();
             future.channel().closeFuture().sync();
         } finally {
             group.shutdownGracefully();
+            System.out.println("Server has been shut down"); // logging
         }
     }
 
