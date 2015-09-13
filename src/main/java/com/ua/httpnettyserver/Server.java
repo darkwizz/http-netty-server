@@ -40,9 +40,9 @@ public class Server {
                 .childOption(ChannelOption.SO_KEEPALIVE, true);
             ChannelFuture future = bootstrap.bind(port);
             System.out.println("Run server on port " + port); // logging
-            //System.in.read();
+            System.in.read();
             future.channel().closeFuture().sync();
-            System.out.println("Parent channel is closed");
+            System.out.println("Parent channel is closed"); // logging
         } finally {
             group.shutdownGracefully();
             System.out.println("Server has been shut down"); // logging
