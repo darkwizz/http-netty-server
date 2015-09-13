@@ -42,6 +42,7 @@ public class Server {
             System.out.println("Run server on port " + port); // logging
             //System.in.read();
             future.channel().closeFuture().sync();
+            System.out.println("Parent channel is closed");
         } finally {
             group.shutdownGracefully();
             System.out.println("Server has been shut down"); // logging
