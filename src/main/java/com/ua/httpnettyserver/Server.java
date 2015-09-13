@@ -41,7 +41,7 @@ public class Server {
                         }
                     })
                 .childOption(ChannelOption.SO_KEEPALIVE, true);
-            future = bootstrap.bind(port);
+            future = bootstrap.bind("localhost", port);
             System.out.println("Run server on port " + port); // logging
             //System.in.read();
             while(true) {
