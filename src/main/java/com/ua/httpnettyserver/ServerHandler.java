@@ -80,7 +80,9 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
                         handleStatus(context);
                         break;
                     case "/stop":
-                        handleStop(context);
+                        sendResponse(context, "<h1>Now stop isn't needed</h1>", HttpResponseStatus.OK,
+                                new WritingChannelListener());
+                        //handleStop(context);
                         break;
                     default:
                         sendResponse(context, "<h1>EHLO there. Unknown path</h1>", HttpResponseStatus.OK,
