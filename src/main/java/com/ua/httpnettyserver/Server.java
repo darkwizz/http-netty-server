@@ -20,9 +20,11 @@ import static java.lang.Thread.sleep;
  */
 public class Server {
     private final int port;
+    private final String host;
 
-    public Server(int port) {
+    public Server(int port, String host) {
         this.port = port;
+        this.host = host;
     }
 
     public void run() throws InterruptedException, IOException {
@@ -41,8 +43,9 @@ public class Server {
                         }
                     })
                 .childOption(ChannelOption.SO_KEEPALIVE, true);
-            future = bootstrap.bind("localhost", port);
-            System.out.println("Run server on port " + port); // logging
+
+            future = bootstrap.bind(host, port);
+            System.out.println("Run server on " + host + ":" + port); // logging
             //System.in.read();
             while(true) {
                 sleep(60);
@@ -58,7 +61,18 @@ public class Server {
     }
 
     public static void main(String[] argv) {
-        Server server = new Server(8080);
+        String host = System.getenv("OPENSHIFT_INTERNAL_IP");
+        if (host == null) {
+            host = System.getenv("OPENSHIFT_DIY_IP");
+        }
+        System.out.println("Host: " + host); // logging
+        String strPort = System.getenv("OPENSHIFT_INTERNAL_PORT");
+        if (strPort == null) {
+            strPort = System.getenv("OPENSHIFT_DIY_PORT");
+        }
+        System.out.println("Port: " + strPort); // logging
+        int port = Integer.parseInt(strPort);
+        Server server = new Server(port, host);
         try {
             server.run();
         } catch (InterruptedException ex) {
