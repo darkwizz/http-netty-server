@@ -13,6 +13,8 @@ import io.netty.handler.codec.http.HttpResponseEncoder;
 
 import java.io.IOException;
 
+import static java.lang.Thread.sleep;
+
 /**
  * Created by ARTUR on 04.09.2015.
  */
@@ -25,6 +27,7 @@ public class Server {
 
     public void run() throws InterruptedException, IOException {
         EventLoopGroup group = new NioEventLoopGroup();
+        ChannelFuture future = null;
         try {
             ServerBootstrap bootstrap = new ServerBootstrap();
             bootstrap.group(group); // set one event loop group both for boss thread and worker threads
@@ -38,12 +41,17 @@ public class Server {
                         }
                     })
                 .childOption(ChannelOption.SO_KEEPALIVE, true);
-            ChannelFuture future = bootstrap.bind(port);
+            future = bootstrap.bind(port);
             System.out.println("Run server on port " + port); // logging
-            System.in.read();
-            future.channel().closeFuture().sync();
-            System.out.println("Parent channel is closed"); // logging
+            //System.in.read();
+            while(true) {
+                sleep(60);
+            }
         } finally {
+            if (future != null) {
+                future.channel().closeFuture().sync();
+            }
+            System.out.println("Parent channel is closed"); // logging
             group.shutdownGracefully();
             System.out.println("Server has been shut down"); // logging
         }
